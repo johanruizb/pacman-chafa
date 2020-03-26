@@ -35,11 +35,11 @@ function sketchProc(processing) {
 		const w3 = world.world3;
 		processing.noStroke();
 		processing.background(240, 240, 240);
-		processing.fill(255, 204, 0);
-		processing.ellipse(w1.x, w1.y, w1.ancho, w1.alto);
 		processing.fill(255, 191, 128);
 		processing.ellipse(w3.x, w3.y, w3.ancho, w3.alto);
-		processing.fill(240, 240, 240);
+		processing.fill(255, 204, 0);
+		processing.ellipse(w1.x, w1.y, w1.ancho, w1.alto);
+	    processing.fill(240, 240, 240);
 		processing.triangle(w2.x1, w2.y1, w2.x2, w2.y2, w2.x3, w2.y3);
 	};
 
@@ -49,7 +49,7 @@ function sketchProc(processing) {
 		const w1 = world.world1;
 		const w2 = world.world2;
 		const w3 = world.world3;
-		if (w3.x == w1.x + 30) {
+		if (w3.x == w1.x) {
 			return {
 				world1: { x: w1.x + 10, y: w1.y, ancho: w1.ancho, alto: w1.alto },
 				world2: {

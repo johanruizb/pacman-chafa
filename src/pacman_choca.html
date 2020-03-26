@@ -35,10 +35,10 @@ function sketchProc(processing) {
 		const w3 = world.world3;
 		processing.noStroke();
 		processing.background(240, 240, 240);
-		processing.fill(255, 204, 0);
-		processing.ellipse(w1.x, w1.y, w1.ancho, w1.alto);
 		processing.fill(255, 191, 128);
 		processing.ellipse(w3.x, w3.y, w3.ancho, w3.alto);
+		processing.fill(255, 204, 0);
+		processing.ellipse(w1.x, w1.y, w1.ancho, w1.alto);
 		processing.fill(240, 240, 240);
 		processing.triangle(w2.x1, w2.y1, w2.x2, w2.y2, w2.x3, w2.y3);
 		processing.fill(0, 89, 179);
@@ -48,7 +48,7 @@ function sketchProc(processing) {
 		processing.rect(0, 260, 260, 20);
 		processing.rect(0, 120, 260, 20);
 		processing.rect(240, 0, 400, 20);
-		// processing.rect(240, 380, 400, 20);
+		//processing.rect(240, 380, 400, 20);
 	};
 
 	//Actualiza el mundo despues de cada frame. En este ejemplo, no cambia nada, solo retorna una copia del mundo
