@@ -49,7 +49,7 @@ El tercer ejemplo es [pacman_moviendose.html](src/pacman_moviendose.html) y mues
 
 ## pacman_choca
 
-El cuarto ejemplo es [pacman_choca](src/pacman_choca) y muestra a Pacman chocando o deteniéndose al toparse con una "pared". Esto se logro también configurando **processing.onTic = function(world)**.
+El cuarto ejemplo es [pacman_choca](src/pacman_choca.html) y muestra a Pacman chocando o deteniéndose al toparse con una "pared". Esto se logro también configurando **processing.onTic = function(world)**.
 
 ``` js
 	processing.onTic = function(world) {
