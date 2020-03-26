@@ -12,10 +12,7 @@ function make(data, attribute) {
 	return Object.assign({}, data, attribute);
 }
 
-/**
- * Ejemplo de pintar un rectángulo coloreado en un canvas cuadrado
- * No requiere interacción con el usuario
- */
+//Un dibujo o grafico de pacman
 
 function sketchProc(processing) {
 	/**
@@ -38,17 +35,17 @@ function sketchProc(processing) {
 		processing.background(240, 240, 240);
 		processing.fill(255, 204, 0);
 		processing.ellipse(w1.x, w1.y, w1.ancho, w1.alto);
-		processing.fill(255, 191, 128);
-		processing.ellipse(w1.x + 75, w1.y, w1.ancho - 70, w1.alto - 70);
-		processing.ellipse(w1.x + 75 * 2, w1.y, w1.ancho - 70, w1.alto - 70);
-		processing.ellipse(w1.x + 75 * 3, w1.y, w1.ancho - 70, w1.alto - 70);
-		processing.ellipse(w1.x + 75 * 4, w1.y, w1.ancho - 70, w1.alto - 70);
 		processing.fill(240, 240, 240);
 		processing.triangle(w1.x, w1.y, w2.x2, w2.y2, w2.x3, w2.y3);
-	};
+		processing.fill(255, 191, 128);
+		processing.ellipse(125, 200, 30, 30);
+		processing.ellipse(200, 200, 30, 30);
+		processing.ellipse(275, 200, 30, 30);
+		processing.ellipse(350, 200, 30, 30);
+};
 
 	//Actualiza el mundo despues de cada frame. En este ejemplo, no cambia nada, solo retorna una copia del mundo
-
+/*
 	processing.onTic = function(world) {
 		const w1 = world.world1;
 		const w2 = world.world2;
@@ -77,7 +74,7 @@ function sketchProc(processing) {
 				}
 			};
 		}
-	};
+	}; */
 
 	//Implemente esta función si quiere que su programa reaccione a eventos del mouse
 	processing.onMouseEvent = function(world, event) {

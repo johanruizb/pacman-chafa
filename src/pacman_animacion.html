@@ -12,7 +12,7 @@ function make(data, attribute) {
 	return Object.assign({}, data, attribute);
 }
 
-//Pacman choca al encontrarse con una "pared"
+//Pacman mueve la boca
 
 function sketchProc(processing) {
 	/**
@@ -23,8 +23,7 @@ function sketchProc(processing) {
 		processing.size(400, 400);
 		processing.state = {
 			world1: { x: 50, y: 200, ancho: 100, alto: 100 },
-			world2: { x1: 50, y1: 200, x2: 100, y2: 150, x3: 100, y3: 250 },
-			world3: { x: 270, y: 200, ancho: 30, alto: 30 }
+			world2: { x1: 50, y1: 200, x2: 100, y2: 150, x3: 100, y3: 250 }
 		};
 	};
 
@@ -32,76 +31,50 @@ function sketchProc(processing) {
 	processing.drawGame = function(world) {
 		const w1 = world.world1;
 		const w2 = world.world2;
-		const w3 = world.world3;
 		processing.noStroke();
 		processing.background(240, 240, 240);
 		processing.fill(255, 204, 0);
 		processing.ellipse(w1.x, w1.y, w1.ancho, w1.alto);
-		processing.fill(255, 191, 128);
-		processing.ellipse(w3.x, w3.y, w3.ancho, w3.alto);
 		processing.fill(240, 240, 240);
-		processing.triangle(w2.x1, w2.y1, w2.x2, w2.y2, w2.x3, w2.y3);
-		processing.fill(0, 89, 179);
-		processing.rect(240, 0, 20, 120);
-		processing.rect(240, 260, 20, 400);
-		processing.rect(380, 0, 20, 400);
-		processing.rect(0, 260, 260, 20);
-		processing.rect(0, 120, 260, 20);
-		processing.rect(240, 0, 400, 20);
-		// processing.rect(240, 380, 400, 20);
-	};
+		processing.triangle(w1.x, w1.y, w2.x2, w2.y2, w2.x3, w2.y3);
+		processing.fill(255, 191, 128);
+		processing.ellipse(125, 200, 30, 30);
+		processing.ellipse(200, 200, 30, 30);
+		processing.ellipse(275, 200, 30, 30);
+		processing.ellipse(350, 200, 30, 30);
+};
 
 	//Actualiza el mundo despues de cada frame. En este ejemplo, no cambia nada, solo retorna una copia del mundo
 
 	processing.onTic = function(world) {
 		const w1 = world.world1;
 		const w2 = world.world2;
-		const w3 = world.world3;
-		if (w1.x + 50 == 380) {
-			return { world1: w1, world2: w2, world3: w3 };
-		}
-		if (w3.x == w1.x + 30) {
+		if (w2.y2 !== w1.y) {
 			return {
-				world1: { x: w1.x + 10, y: w1.y, ancho: w1.ancho, alto: w1.alto },
+				world1: w1,
 				world2: {
-					x1: w1.x,
-					y1: w1.y,
-					x2: w2.x2 + 10,
+					x1: w2.x1,
+					y1: w2.y1,
+					x2: w2.x2,
 					y2: w2.y2 + 25,
-					x3: w2.x3 + 10,
+					x3: w2.x3,
 					y3: w2.y3 - 25
-				},
-				world3: { x: w3.x, y: w3.y, ancho: 0, alto: 0 }
-			};
-		}
-		if (w2.y2 !== 200) {
-			return {
-				world1: { x: w1.x + 10, y: w1.y, ancho: w1.ancho, alto: w1.alto },
-				world2: {
-					x1: w1.x,
-					y1: w1.y,
-					x2: w2.x2 + 10,
-					y2: w2.y2 + 25,
-					x3: w2.x3 + 10,
-					y3: w2.y3 - 25
-				},
-				world3: w3
+				}
 			};
 		} else {
 			return {
-				world1: { x: w1.x + 10, y: w1.y, ancho: w1.ancho, alto: w1.alto },
+				world1: w1,
 				world2: {
-					x1: w1.x,
-					y1: w1.y,
-					x2: w2.x2 + 10,
+					x1: w2.x1,
+					y1: w2.y1,
+					x2: w2.x2,
 					y2: w2.y2 - 50,
-					x3: w2.x3 + 10,
+					x3: w2.x3,
 					y3: w2.y3 + 50
-				},
-				world3: w3
+				}
 			};
 		}
-	};
+	}; 
 
 	//Implemente esta función si quiere que su programa reaccione a eventos del mouse
 	processing.onMouseEvent = function(world, event) {
