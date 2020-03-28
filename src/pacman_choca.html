@@ -5,6 +5,10 @@
 //Vamos a usar http://processingjs.org/
 // o https://p5js.org/reference/
 
+const ANCHO = 400;
+const ALTO = 400;
+const ESCALA = 50;
+
 // Importamos las librerias
 let { append, cons, first, isEmpty, isList, length, rest } = functionalLight;
 
@@ -12,7 +16,7 @@ function make(data, attribute) {
 	return Object.assign({}, data, attribute);
 }
 
-//Pacman choca al encontrarse con una "pared"
+//Un dibujo o grafico de pacman
 
 function sketchProc(processing) {
 	/**
@@ -20,86 +24,184 @@ function sketchProc(processing) {
 	 */
 	processing.setup = function() {
 		processing.frameRate(10);
-		processing.size(400, 400);
+		processing.size(ANCHO, ALTO);
 		processing.state = {
-			world1: { x: 50, y: 200, ancho: 100, alto: 100 },
-			world2: { x1: 50, y1: 200, x2: 100, y2: 150, x3: 100, y3: 250 },
-			world3: { x: 270, y: 200, ancho: 30, alto: 30 }
+			tiempo: 0,
+			pacman: { x: ESCALA / 2, y: ESCALA / 2 },
+			galleta1: { x: 2.5, y: 1, visible: true },
+			galleta2: { x: 3.5, y: 1, visible: true },
+			galleta3: { x: 4.5, y: 1, visible: true },
+			galleta4: { x: 5.5, y: 1, visible: true }
 		};
 	};
 
 	// Dibuja algo en el canvas. Aqui se pone todo lo que quieras pintar
 	processing.drawGame = function(world) {
-		const w1 = world.world1;
-		const w2 = world.world2;
-		const w3 = world.world3;
+		const pac = world.pacman;
+
 		processing.noStroke();
 		processing.background(240, 240, 240);
 		processing.fill(255, 191, 128);
-		processing.ellipse(w3.x, w3.y, w3.ancho, w3.alto);
+		if (world.galleta1.visible) {
+			processing.ellipse(
+				world.galleta1.x * ESCALA,
+				(world.galleta1.y * ESCALA) / 2,
+				ESCALA / 2,
+				ESCALA / 2
+			);
+		}
+		if (world.galleta2.visible) {
+			processing.ellipse(
+				world.galleta2.x * ESCALA,
+				(world.galleta2.y * ESCALA) / 2,
+				ESCALA / 2,
+				ESCALA / 2
+			);
+		}
+		if (world.galleta3.visible) {
+			processing.ellipse(
+				world.galleta3.x * ESCALA,
+				(world.galleta3.y * ESCALA) / 2,
+				ESCALA / 2,
+				ESCALA / 2
+			);
+		}
+		if (world.galleta4.visible) {
+			processing.ellipse(
+				world.galleta4.x * ESCALA,
+				(world.galleta4.y * ESCALA) / 2,
+				ESCALA / 2,
+				ESCALA / 2
+			);
+		}
+
 		processing.fill(255, 204, 0);
-		processing.ellipse(w1.x, w1.y, w1.ancho, w1.alto);
-		processing.fill(240, 240, 240);
-		processing.triangle(w2.x1, w2.y1, w2.x2, w2.y2, w2.x3, w2.y3);
+		if (world.tiempo == 0) {
+			processing.arc(
+				world.pacman.x,
+				world.pacman.y,
+				ESCALA,
+				ESCALA,
+				Math.PI / 4,
+				(Math.PI * 7) / 4
+			);
+		} else if (world.tiempo == 1 || world.tiempo == 3) {
+			processing.arc(
+				world.pacman.x,
+				world.pacman.y,
+				ESCALA,
+				ESCALA,
+				(Math.PI * 0.5) / 4,
+				(Math.PI * 7.5) / 4
+			);
+		} else if (world.tiempo == 2) {
+			processing.arc(
+				world.pacman.x,
+				world.pacman.y,
+				ESCALA,
+				ESCALA,
+				0,
+				Math.PI * 2
+			);
+		}
 		processing.fill(0, 89, 179);
-		processing.rect(240, 0, 20, 120);
-		processing.rect(240, 260, 20, 400);
-		processing.rect(380, 0, 20, 400);
-		processing.rect(0, 260, 260, 20);
-		processing.rect(0, 120, 260, 20);
-		processing.rect(240, 0, 400, 20);
-		//processing.rect(240, 380, 400, 20);
+		processing.rect(400 - ESCALA, 0, 400, 400);
+		processing.rect(0, ESCALA, 300, ESCALA);
+		//Rejilla de 50x50, únicamente funciona correctamente cuando la ESCALA es 50
+		processing.fill(0, 0, 0);
+		processing.rect(0, 0, 1, 400);
+		processing.rect(ESCALA, 0, 1, 400);
+		processing.rect(ESCALA * 2, 0, 1, 400);
+		processing.rect(ESCALA * 3, 0, 1, 400);
+		processing.rect(ESCALA * 4, 0, 1, 400);
+		processing.rect(ESCALA * 5, 0, 1, 400);
+		processing.rect(ESCALA * 6, 0, 1, 400);
+		processing.rect(ESCALA * 7, 0, 1, 400);
+		processing.rect(ESCALA * 8, 0, 1, 400);
+		processing.rect(0, 0, 400, 1);
+		processing.rect(0, ESCALA, 400, 1);
+		processing.rect(0, ESCALA * 2, 400, 1);
+		processing.rect(0, ESCALA * 3, 400, 1);
+		processing.rect(0, ESCALA * 4, 400, 1);
+		processing.rect(0, ESCALA * 5, 400, 1);
+		processing.rect(0, ESCALA * 6, 400, 1);
+		processing.rect(0, ESCALA * 7, 400, 1);
+		processing.rect(0, ESCALA * 8, 400, 1);
 	};
 
 	//Actualiza el mundo despues de cada frame. En este ejemplo, no cambia nada, solo retorna una copia del mundo
-
 	processing.onTic = function(world) {
-		const w1 = world.world1;
-		const w2 = world.world2;
-		const w3 = world.world3;
-		if (w1.x + 50 == 380) {
-			return { world1: w1, world2: w2, world3: w3 };
+		const pac = world.pacman;
+		if (pac.x + ESCALA * 1.5 == ANCHO) {
+			return make(world, {});
 		}
-		if (w3.x == w1.x + 30) {
-			return {
-				world1: { x: w1.x + 10, y: w1.y, ancho: w1.ancho, alto: w1.alto },
-				world2: {
-					x1: w1.x,
-					y1: w1.y,
-					x2: w2.x2 + 10,
-					y2: w2.y2 + 25,
-					x3: w2.x3 + 10,
-					y3: w2.y3 - 25
-				},
-				world3: { x: w3.x, y: w3.y, ancho: 0, alto: 0 }
-			};
+		if (pac.x == world.galleta1.x * ESCALA) {
+			if (world.tiempo == 3) {
+				return make(world, {
+					tiempo: 0,
+					pacman: { x: pac.x + 5, y: pac.y },
+					galleta1: { visible: false }
+				});
+			} else {
+				return make(world, {
+					tiempo: world.tiempo + 1,
+					pacman: { x: pac.x + 5, y: pac.y },
+					galleta1: { visible: false }
+				});
+			}
 		}
-		if (w2.y2 !== 200) {
-			return {
-				world1: { x: w1.x + 10, y: w1.y, ancho: w1.ancho, alto: w1.alto },
-				world2: {
-					x1: w1.x,
-					y1: w1.y,
-					x2: w2.x2 + 10,
-					y2: w2.y2 + 25,
-					x3: w2.x3 + 10,
-					y3: w2.y3 - 25
-				},
-				world3: w3
-			};
+		if (pac.x == world.galleta2.x * ESCALA) {
+			if (world.tiempo == 3) {
+				return make(world, {
+					tiempo: 0,
+					pacman: { x: pac.x + 5, y: pac.y },
+					galleta2: { visible: false }
+				});
+			} else {
+				return make(world, {
+					tiempo: world.tiempo + 1,
+					pacman: { x: pac.x + 5, y: pac.y },
+					galleta2: { visible: false }
+				});
+			}
+		}
+		if (pac.x == world.galleta3.x * ESCALA) {
+			if (world.tiempo == 3) {
+				return make(world, {
+					tiempo: 0,
+					pacman: { x: pac.x + 5, y: pac.y },
+					galleta3: { visible: false }
+				});
+			} else {
+				return make(world, {
+					tiempo: world.tiempo + 1,
+					pacman: { x: pac.x + 5, y: pac.y },
+					galleta3: { visible: false }
+				});
+			}
+		}
+		if (pac.x == world.galleta4.x * ESCALA) {
+			if (world.tiempo == 3) {
+				return make(world, {
+					tiempo: 0,
+					pacman: { x: pac.x + 5, y: pac.y },
+					galleta4: { visible: false }
+				});
+			} else {
+				return make(world, {
+					tiempo: world.tiempo + 1,
+					pacman: { x: pac.x + 5, y: pac.y },
+					galleta4: { visible: false }
+				});
+			}
+		}
+		if (world.tiempo == 3) {
+			return make(world, { tiempo: 0, pacman: { x: pac.x + 5, y: pac.y } });
 		} else {
-			return {
-				world1: { x: w1.x + 10, y: w1.y, ancho: w1.ancho, alto: w1.alto },
-				world2: {
-					x1: w1.x,
-					y1: w1.y,
-					x2: w2.x2 + 10,
-					y2: w2.y2 - 50,
-					x3: w2.x3 + 10,
-					y3: w2.y3 + 50
-				},
-				world3: w3
-			};
+			return make(world, {
+				tiempo: world.tiempo + 1,
+				pacman: { x: pac.x + 5, y: pac.y }
+			});
 		}
 	};
 

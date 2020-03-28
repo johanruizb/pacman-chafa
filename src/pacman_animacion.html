@@ -5,6 +5,10 @@
 //Vamos a usar http://processingjs.org/
 // o https://p5js.org/reference/
 
+const ANCHO = 400;
+const ALTO = 400;
+const ESCALA = 50;
+
 // Importamos las librerias
 let { append, cons, first, isEmpty, isList, length, rest } = functionalLight;
 
@@ -12,7 +16,7 @@ function make(data, attribute) {
 	return Object.assign({}, data, attribute);
 }
 
-//Pacman mueve la boca
+//Un dibujo o grafico de pacman
 
 function sketchProc(processing) {
 	/**
@@ -20,61 +24,116 @@ function sketchProc(processing) {
 	 */
 	processing.setup = function() {
 		processing.frameRate(10);
-		processing.size(400, 400);
+		processing.size(ANCHO, ALTO);
 		processing.state = {
-			world1: { x: 50, y: 200, ancho: 100, alto: 100 },
-			world2: { x1: 50, y1: 200, x2: 100, y2: 150, x3: 100, y3: 250 }
+			tiempo: 0,
+			pacman: { x: ESCALA / 2, y: ESCALA / 2 },
+			galleta1: { x: 2.5, y: 1, visible: true },
+			galleta2: { x: 3.5, y: 1, visible: true },
+			galleta3: { x: 4.5, y: 1, visible: true },
+			galleta4: { x: 5.5, y: 1, visible: true }
 		};
 	};
 
 	// Dibuja algo en el canvas. Aqui se pone todo lo que quieras pintar
 	processing.drawGame = function(world) {
-		const w1 = world.world1;
-		const w2 = world.world2;
+		const pac = world.pacman;
+
 		processing.noStroke();
 		processing.background(240, 240, 240);
-		processing.fill(255, 204, 0);
-		processing.ellipse(w1.x, w1.y, w1.ancho, w1.alto);
-		processing.fill(240, 240, 240);
-		processing.triangle(w1.x, w1.y, w2.x2, w2.y2, w2.x3, w2.y3);
 		processing.fill(255, 191, 128);
-		processing.ellipse(125, 200, 30, 30);
-		processing.ellipse(200, 200, 30, 30);
-		processing.ellipse(275, 200, 30, 30);
-		processing.ellipse(350, 200, 30, 30);
-};
-
-	//Actualiza el mundo despues de cada frame. En este ejemplo, no cambia nada, solo retorna una copia del mundo
-
-	processing.onTic = function(world) {
-		const w1 = world.world1;
-		const w2 = world.world2;
-		if (w2.y2 !== w1.y) {
-			return {
-				world1: w1,
-				world2: {
-					x1: w2.x1,
-					y1: w2.y1,
-					x2: w2.x2,
-					y2: w2.y2 + 25,
-					x3: w2.x3,
-					y3: w2.y3 - 25
-				}
-			};
-		} else {
-			return {
-				world1: w1,
-				world2: {
-					x1: w2.x1,
-					y1: w2.y1,
-					x2: w2.x2,
-					y2: w2.y2 - 50,
-					x3: w2.x3,
-					y3: w2.y3 + 50
-				}
-			};
+		if (world.galleta1.visible) {
+			processing.ellipse(
+				world.galleta1.x * ESCALA,
+				(world.galleta1.y * ESCALA) / 2,
+				ESCALA / 2,
+				ESCALA / 2
+			);
 		}
-	}; 
+		if (world.galleta2.visible) {
+			processing.ellipse(
+				world.galleta2.x * ESCALA,
+				(world.galleta2.y * ESCALA) / 2,
+				ESCALA / 2,
+				ESCALA / 2
+			);
+		}
+		if (world.galleta3.visible) {
+			processing.ellipse(
+				world.galleta3.x * ESCALA,
+				(world.galleta3.y * ESCALA) / 2,
+				ESCALA / 2,
+				ESCALA / 2
+			);
+		}
+		if (world.galleta4.visible) {
+			processing.ellipse(
+				world.galleta4.x * ESCALA,
+				(world.galleta4.y * ESCALA) / 2,
+				ESCALA / 2,
+				ESCALA / 2
+			);
+		}
+
+		processing.fill(255, 204, 0);
+		if (world.tiempo == 0) {
+			processing.arc(
+				world.pacman.x,
+				world.pacman.y,
+				ESCALA,
+				ESCALA,
+				Math.PI / 4,
+				(Math.PI * 7) / 4
+			);
+		} else if (world.tiempo == 1 || world.tiempo == 3) {
+			processing.arc(
+				world.pacman.x,
+				world.pacman.y,
+				ESCALA,
+				ESCALA,
+				(Math.PI * 0.5) / 4,
+				(Math.PI * 7.5) / 4
+			);
+		} else if (world.tiempo == 2) {
+			processing.arc(
+				world.pacman.x,
+				world.pacman.y,
+				ESCALA,
+				ESCALA,
+				0,
+				Math.PI * 2
+			);
+		}
+
+		//Rejilla de 50x50, únicamente funciona correctamente cuando la ESCALA es 50
+		processing.fill(0, 0, 0);
+		processing.rect(0, 0, 1, 400);
+		processing.rect(ESCALA, 0, 1, 400);
+		processing.rect(ESCALA * 2, 0, 1, 400);
+		processing.rect(ESCALA * 3, 0, 1, 400);
+		processing.rect(ESCALA * 4, 0, 1, 400);
+		processing.rect(ESCALA * 5, 0, 1, 400);
+		processing.rect(ESCALA * 6, 0, 1, 400);
+		processing.rect(ESCALA * 7, 0, 1, 400);
+		processing.rect(ESCALA * 8, 0, 1, 400);
+		processing.rect(0, 0, 400, 1);
+		processing.rect(0, ESCALA, 400, 1);
+		processing.rect(0, ESCALA * 2, 400, 1);
+		processing.rect(0, ESCALA * 3, 400, 1);
+		processing.rect(0, ESCALA * 4, 400, 1);
+		processing.rect(0, ESCALA * 5, 400, 1);
+		processing.rect(0, ESCALA * 6, 400, 1);
+		processing.rect(0, ESCALA * 7, 400, 1);
+		processing.rect(0, ESCALA * 8, 400, 1);
+	};
+	//Actualiza el mundo despues de cada frame. En este ejemplo, no cambia nada, solo retorna una copia del mundo
+	processing.onTic = function(world) {
+		if (world.tiempo == 3) {
+			return make(world, { tiempo: 0 });
+		} else {
+			return make(world, { tiempo: world.tiempo + 1 });
+		}
+	};
 
 	//Implemente esta función si quiere que su programa reaccione a eventos del mouse
 	processing.onMouseEvent = function(world, event) {
